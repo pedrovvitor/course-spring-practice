@@ -15,21 +15,20 @@ import com.pedrolima.springrest.services.CategoryService;
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
-	
+
 	@Autowired
 	private CategoryService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Category>> findAll() {
 		List<Category> categories = service.findAll();
 		return ResponseEntity.ok().body(categories);
 	}
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Category> findById(@PathVariable Long id){
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
 		Category obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
 
 }
