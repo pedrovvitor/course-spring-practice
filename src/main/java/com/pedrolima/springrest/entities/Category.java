@@ -22,7 +22,7 @@ public class Category implements Serializable {
 	private Long id;
 	@Column(nullable = false)
 	private String name;
-	
+
 	@ManyToMany(mappedBy = "categories")
 	public List<Product> products = new ArrayList<>();
 

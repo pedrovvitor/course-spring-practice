@@ -1,13 +1,13 @@
 package com.pedrolima.springrest.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.entities.Product;
 import com.pedrolima.springrest.repositories.ProductRepository;
+import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -20,7 +20,6 @@ public class ProductService {
 	}
 
 	public Product findById(Long id) {
-		Optional<Product> obj = repository.findById(id);
-		return obj.orElse(null);
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
 	}
 }
