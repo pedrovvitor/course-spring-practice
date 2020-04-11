@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_address")
 public class Address implements Serializable {
@@ -29,6 +31,7 @@ public class Address implements Serializable {
 
 	private String zipCode;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

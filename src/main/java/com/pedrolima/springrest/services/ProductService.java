@@ -20,6 +20,6 @@ public class ProductService {
 	}
 
 	public Product findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
 	}
 }
