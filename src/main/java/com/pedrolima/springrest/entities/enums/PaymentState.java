@@ -2,13 +2,11 @@ package com.pedrolima.springrest.entities.enums;
 
 public enum PaymentState {
 
-	PENDING(1, "Pending"),
-	PAYED(2, "Payed"),
-	CANCELLED(3, "Cancelled");
-	
+	PENDING(1, "Pending"), PAYED(2, "Payed"), CANCELLED(3, "Cancelled");
+
 	private Integer cod;
 	private String description;
-	
+
 	private PaymentState(Integer cod, String description) {
 		this.cod = cod;
 		this.description = description;
@@ -21,15 +19,15 @@ public enum PaymentState {
 	public String getDescription() {
 		return description;
 	}
-	
-	public PaymentState toEnum(Integer cod) {
-		
-		if(cod == null) {
+
+	public static PaymentState toEnum(Integer cod) {
+
+		if (cod == null) {
 			return null;
 		}
-		
-		for(PaymentState x : PaymentState.values()) {
-			if(x.getCod() == cod) {
+
+		for (PaymentState x : PaymentState.values()) {
+			if (x.getCod() == cod) {
 				return x;
 			}
 		}

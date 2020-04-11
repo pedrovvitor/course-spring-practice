@@ -1,5 +1,7 @@
 package com.pedrolima.springrest.config;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +12,21 @@ import org.springframework.context.annotation.Profile;
 import com.pedrolima.springrest.entities.Address;
 import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.entities.City;
+import com.pedrolima.springrest.entities.CreditCardPayment;
 import com.pedrolima.springrest.entities.Customer;
+import com.pedrolima.springrest.entities.Order;
+import com.pedrolima.springrest.entities.Payment;
+import com.pedrolima.springrest.entities.PaymentSlip;
 import com.pedrolima.springrest.entities.Product;
 import com.pedrolima.springrest.entities.State;
 import com.pedrolima.springrest.entities.enums.CustomerType;
+import com.pedrolima.springrest.entities.enums.PaymentState;
 import com.pedrolima.springrest.repositories.AddressRepository;
 import com.pedrolima.springrest.repositories.CategoryRepository;
 import com.pedrolima.springrest.repositories.CityRepository;
 import com.pedrolima.springrest.repositories.CustomerRepository;
+import com.pedrolima.springrest.repositories.OrderRepository;
+import com.pedrolima.springrest.repositories.PaymentRepository;
 import com.pedrolima.springrest.repositories.ProductRepository;
 import com.pedrolima.springrest.repositories.StateRepository;
 
@@ -42,6 +51,12 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -87,6 +102,20 @@ public class TestConfig implements CommandLineRunner {
 
 		customerRepository.save(customer1);
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
+		
+		
+		Order o1 = new Order(null, LocalDateTime.of(2017, 9, 30, 10, 32), customer1, ad1);
+		Order o2 = new Order(null, LocalDateTime.of(2017, 10, 10, 19, 35), customer1, ad2);
+		
+		Payment pay1 = new CreditCardPayment(null, PaymentState.PAYED, o1, 6);
+		o1.setPayment(pay1);
+		Payment pay2 = new PaymentSlip(null, PaymentState.PENDING, o2, LocalDate.of(2017, 10, 20), null);
+		o2.setPayment(pay2);
+		
+		customer1.getOrders().addAll(Arrays.asList(o1, o2));
+		
+		orderRepository.saveAll(Arrays.asList(o1, o2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 	}
 
 }

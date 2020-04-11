@@ -1,14 +1,15 @@
 package com.pedrolima.springrest.entities;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,33 +17,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order")
-public class Order implements Serializable{
+public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private Instant instant;
-	
+
+	private LocalDateTime instant;
+
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "orders")
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
-	@OneToOne
+
+	@ManyToOne
+	@JoinColumn(name = "deliveryAddress_id")
 	private Address deliveryAddress;
 
 	public Order() {
 	}
 
-	public Order(Long id, Instant instant, Payment payment, Customer customer, Address deliveryAddress) {
+	public Order(Long id, LocalDateTime instant, Customer customer, Address deliveryAddress) {
 		super();
 		this.id = id;
 		this.instant = instant;
-		this.payment = payment;
 		this.customer = customer;
 		this.deliveryAddress = deliveryAddress;
 	}
@@ -55,11 +57,11 @@ public class Order implements Serializable{
 		this.id = id;
 	}
 
-	public Instant getInstant() {
+	public LocalDateTime getInstant() {
 		return instant;
 	}
 
-	public void setInstant(Instant instant) {
+	public void setInstant(LocalDateTime instant) {
 		this.instant = instant;
 	}
 
@@ -111,5 +113,5 @@ public class Order implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

@@ -1,7 +1,12 @@
 package com.pedrolima.springrest.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.pedrolima.springrest.entities.enums.PaymentState;
 
+@Entity
+@Table(name = "tb_credit_card_payment")
 public class CreditCardPayment extends Payment {
 	private static final long serialVersionUID = 1L;
 
@@ -14,6 +19,7 @@ public class CreditCardPayment extends Payment {
 		super(id, state, order);
 		this.installments = installments;
 	}
+
 	public Integer getInstallments() {
 		return installments;
 	}

@@ -3,9 +3,9 @@ package com.pedrolima.springrest.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -15,18 +15,19 @@ import com.pedrolima.springrest.entities.enums.PaymentState;
 
 @Entity
 @Table(name = "tb_payment")
-public class Payment implements Serializable{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Long id;
-	private PaymentState state;
-	
+	private Integer state;
+
 	@OneToOne
 	@JoinColumn(name = "order_id")
 	@MapsId
 	private Order order;
-	
+
 	public Payment() {
 		super();
 	}
@@ -34,7 +35,7 @@ public class Payment implements Serializable{
 	public Payment(Long id, PaymentState state, Order order) {
 		super();
 		this.id = id;
-		this.state = state;
+		this.state = state.getCod();
 		this.order = order;
 	}
 
@@ -47,11 +48,11 @@ public class Payment implements Serializable{
 	}
 
 	public PaymentState getState() {
-		return state;
+		return PaymentState.toEnum(state);
 	}
 
 	public void setState(PaymentState state) {
-		this.state = state;
+		this.state = state.getCod();
 	}
 
 	public Order getOrder() {
@@ -86,5 +87,5 @@ public class Payment implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }
