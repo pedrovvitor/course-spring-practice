@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -40,6 +42,10 @@ public class Customer implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "phone")
 	private Set<String> phones = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private List<Order> orders = new ArrayList<>();
 
 	public Customer() {
 	}
@@ -99,6 +105,10 @@ public class Customer implements Serializable {
 
 	public Set<String> getPhones() {
 		return phones;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	@Override
