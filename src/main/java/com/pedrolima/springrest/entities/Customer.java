@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pedrolima.springrest.entities.enums.CustomerType;
@@ -31,8 +34,11 @@ public class Customer implements Serializable {
 
 	private Integer type;
 
+	@OneToMany(mappedBy = "customer")
 	private List<Address> addresses = new ArrayList<Address>();
 
+	@ElementCollection
+	@CollectionTable(name = "phone")
 	private Set<String> phones = new HashSet<>();
 
 	public Customer() {

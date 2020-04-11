@@ -21,17 +21,14 @@ public enum CustomerType {
 	}
 
 	public static CustomerType toEnum(Integer cod) {
-		
-		if(cod == null) {
+		if (cod == null) {
 			return null;
 		}
-		
-		for(CustomerType x : CustomerType.values()) {
-			if(cod.equals(x.getCod())) {
+		for (CustomerType x : CustomerType.values()) {
+			if (cod.equals(x.getCod())) {
 				return x;
 			}
 		}
-		
 		throw new IllegalArgumentException("Invalid Id: " + cod);
 	}
 }
