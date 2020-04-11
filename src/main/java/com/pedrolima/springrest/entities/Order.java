@@ -2,6 +2,8 @@ package com.pedrolima.springrest.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,6 +39,8 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "deliveryAddress_id")
 	private Address deliveryAddress;
+	
+	private Set<ItemOrder> itens = new HashSet<ItemOrder>();
 
 	public Order() {
 	}
@@ -87,6 +91,10 @@ public class Order implements Serializable {
 
 	public void setDeliveryAddress(Address deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+
+	public Set<ItemOrder> getItens() {
+		return itens;
 	}
 
 	@Override

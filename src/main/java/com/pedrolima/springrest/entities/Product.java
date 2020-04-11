@@ -2,7 +2,9 @@ package com.pedrolima.springrest.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +38,8 @@ public class Product implements Serializable {
 	@JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"),
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	public List<Category> categories = new ArrayList<>();
+	
+	private Set<ItemOrder> itens = new HashSet<ItemOrder>();
 
 	public Product() {
 		super();
@@ -74,6 +78,18 @@ public class Product implements Serializable {
 
 	public List<Category> getCategories() {
 		return categories;
+	}
+
+	public Set<ItemOrder> getItens() {
+		return itens;
+	}
+	
+	public List<Order> orders(){
+		List<Order> list = new ArrayList<Order>();
+		for(ItemOrder x : itens) {
+			list.add(x.getOrder());
+		}
+		return list;
 	}
 
 	@Override
