@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pedrolima.springrest.entities.enums.PaymentState;
 
 @Entity
@@ -23,6 +24,7 @@ public abstract class Payment implements Serializable {
 	private Long id;
 	private Integer state;
 
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "order_id")
 	@MapsId

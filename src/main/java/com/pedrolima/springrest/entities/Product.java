@@ -40,6 +40,7 @@ public class Product implements Serializable {
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	public List<Category> categories = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private Set<ItemOrder> itens = new HashSet<ItemOrder>();
 
@@ -87,7 +88,8 @@ public class Product implements Serializable {
 		return itens;
 	}
 	
-	public List<Order> orders(){
+	@JsonIgnore
+	public List<Order> getOrders(){
 		List<Order> list = new ArrayList<Order>();
 		for(ItemOrder x : itens) {
 			list.add(x.getOrder());
