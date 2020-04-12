@@ -14,6 +14,7 @@ import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.entities.City;
 import com.pedrolima.springrest.entities.CreditCardPayment;
 import com.pedrolima.springrest.entities.Customer;
+import com.pedrolima.springrest.entities.ItemOrder;
 import com.pedrolima.springrest.entities.Order;
 import com.pedrolima.springrest.entities.Payment;
 import com.pedrolima.springrest.entities.PaymentSlip;
@@ -25,6 +26,7 @@ import com.pedrolima.springrest.repositories.AddressRepository;
 import com.pedrolima.springrest.repositories.CategoryRepository;
 import com.pedrolima.springrest.repositories.CityRepository;
 import com.pedrolima.springrest.repositories.CustomerRepository;
+import com.pedrolima.springrest.repositories.ItemOrderRepository;
 import com.pedrolima.springrest.repositories.OrderRepository;
 import com.pedrolima.springrest.repositories.PaymentRepository;
 import com.pedrolima.springrest.repositories.ProductRepository;
@@ -57,6 +59,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private ItemOrderRepository itemOrderRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -116,6 +121,20 @@ public class TestConfig implements CommandLineRunner {
 		
 		orderRepository.saveAll(Arrays.asList(o1, o2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		
+		ItemOrder io1 = new ItemOrder(p1, o1, 0.00, 1, 2000.00);
+		ItemOrder io2 = new ItemOrder(p3, o1, 0.00, 2, 80.00);
+		ItemOrder io3 = new ItemOrder(p2, o2, 100.00, 1, 800.00);
+		
+		o1.getItens().addAll(Arrays.asList(io1, io2));
+		o2.getItens().add(io3);
+		
+		p1.getItens().add(io1);
+		p2.getItens().add(io3);
+		p3.getItens().add(io2);
+		
+		itemOrderRepository.saveAll(Arrays.asList(io1, io2, io3));
+		
 	}
 
 }

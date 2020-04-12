@@ -2,9 +2,16 @@ package com.pedrolima.springrest.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_item_order")
 public class ItemOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@EmbeddedId
 	private ItemOrderPk id = new ItemOrderPk();
 	
 	private Double discount;

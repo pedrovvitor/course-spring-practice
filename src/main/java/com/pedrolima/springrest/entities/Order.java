@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -40,6 +41,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "deliveryAddress_id")
 	private Address deliveryAddress;
 	
+	@OneToMany(mappedBy = "id.order")
 	private Set<ItemOrder> itens = new HashSet<ItemOrder>();
 
 	public Order() {
