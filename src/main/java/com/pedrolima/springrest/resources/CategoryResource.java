@@ -2,6 +2,7 @@ package com.pedrolima.springrest.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pedrolima.springrest.dto.CategoryDTO;
 import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.services.CategoryService;
 
@@ -26,9 +28,10 @@ public class CategoryResource {
 	private CategoryService service;
 
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll() {
-		List<Category> categories = service.findAll();
-		return ResponseEntity.ok().body(categories);
+	public ResponseEntity<List<CategoryDTO>> findAll() {
+		List<Category> list = service.findAll();
+		List<CategoryDTO> listDto = list.stream().map(obj -> new CategoryDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 
 	@GetMapping(value = "/{id}")
