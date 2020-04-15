@@ -22,4 +22,9 @@ public class CategoryService {
 	public Category findById(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
 	}
+	
+	public Category insert(Category obj) {
+		obj.setId(null);
+		return repository.save(obj);
+	}
 }
