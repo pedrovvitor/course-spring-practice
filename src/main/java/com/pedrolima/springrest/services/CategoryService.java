@@ -3,10 +3,12 @@ package com.pedrolima.springrest.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.repositories.CategoryRepository;
+import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -20,16 +22,27 @@ public class CategoryService {
 	}
 
 	public Category findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
+		return repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
 	}
-	
+
 	public Category insert(Category obj) {
 		obj.setId(null);
 		return repository.save(obj);
 	}
-	
+
 	public Category update(Category obj) {
 		findById(obj.getId());
 		return repository.save(obj);
+	}
+
+	public void deleteById(Long id) {
+		findById(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Unable to delete Category wich contains Products");
+
+		}
 	}
 }
