@@ -31,6 +31,12 @@ public class CategoryResource {
 	@Autowired
 	private CategoryService service;
 
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
+		Category obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<Category> list = service.findAll();
@@ -38,12 +44,6 @@ public class CategoryResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Category> findById(@PathVariable Long id) {
-		Category obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
-	
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<CategoryDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
