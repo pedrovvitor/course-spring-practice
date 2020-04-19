@@ -10,7 +10,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.dto.CustomerDTO;
+import com.pedrolima.springrest.dto.CustomerNewDTO;
+import com.pedrolima.springrest.entities.Address;
+import com.pedrolima.springrest.entities.City;
 import com.pedrolima.springrest.entities.Customer;
+import com.pedrolima.springrest.entities.enums.CustomerType;
 import com.pedrolima.springrest.repositories.CustomerRepository;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
@@ -27,6 +31,11 @@ public class CustomerService {
 	
 	public List<Customer> findAll(){
 		return repository.findAll();
+	}
+	
+	public Customer insert(CustomerNewDTO objDto) {
+		Customer obj = fromDTO(objDto);
+		return repository.save(obj);
 	}
 	
 	public Customer update(CustomerDTO objDto) {
@@ -52,6 +61,21 @@ public class CustomerService {
 	
 	public Customer fromDTO(CustomerDTO objDto) {
 		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
+	}
+	
+	public Customer fromDTO(CustomerNewDTO objDto) {
+		Customer obj = new Customer(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOuCnpj(), CustomerType.toEnum(objDto.getType()));
+		Address address = new Address(null, objDto.getStreet(), objDto.getNumber(), objDto.getComplement(),
+				objDto.getNeighborhood(), objDto.getZipCode(), obj, new City(objDto.getCityId(), null, null) );
+		obj.getAddresses().add(address);
+		obj.getPhones().add(objDto.getPhone1());
+		if(objDto.getPhone2() != null) {
+			obj.getPhones().add(objDto.getPhone2());
+		}
+		if(objDto.getPhone3() != null) {
+			obj.getPhones().add(objDto.getPhone3());
+		}
+		return obj;
 	}
 	
 	private void udpateDate(Customer newObj, CustomerDTO objDto) {
