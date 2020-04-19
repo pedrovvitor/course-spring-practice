@@ -2,28 +2,45 @@ package com.pedrolima.springrest.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.pedrolima.springrest.services.validation.CustomerInsert;
+
+@CustomerInsert
 public class CustomerNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "Mandatory filling")
+	@Length(min = 5, max = 120, message = "Must contain between 5 and 120 characters")
 	private String name;
 
+	@NotEmpty(message = "Mandatory filling")
+	@Email(message = "Invalid Email")
 	private String email;
 
+	@NotEmpty(message = "Mandatory filling")
 	private String cpfOuCnpj;
 
 	private Integer type;
 
+	@NotEmpty(message = "Mandatory filling")
 	private String street;
 
+	@NotEmpty(message = "Mandatory filling")
 	private String number;
 
 	private String complement;
 
 	private String neighborhood;
 
+	@NotEmpty(message = "Mandatory filling")
 	private String zipCode;
 
+	@NotEmpty(message = "Mandatory filling")
 	private String phone1;
 
 	private String phone2;

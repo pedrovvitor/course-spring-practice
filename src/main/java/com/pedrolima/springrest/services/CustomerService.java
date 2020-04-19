@@ -24,26 +24,25 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository repository;
-	
+
 	public Customer findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id ));
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
 	}
-	
-	public List<Customer> findAll(){
+
+	public List<Customer> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Customer insert(CustomerNewDTO objDto) {
 		Customer obj = fromDTO(objDto);
 		return repository.save(obj);
 	}
-	
+
 	public Customer update(CustomerDTO objDto) {
 		Customer newObj = findById(objDto.getId());
 		udpateDate(newObj, objDto);
 		return repository.save(newObj);
 	}
-
 
 	public void deleteById(Long id) {
 		findById(id);
@@ -54,30 +53,31 @@ public class CustomerService {
 		}
 	}
 
-	public Page<Customer> findPage( Integer page, Integer size, String orderBy, String direction){
+	public Page<Customer> findPage(Integer page, Integer size, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
 	}
-	
+
 	public Customer fromDTO(CustomerDTO objDto) {
 		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
 	}
-	
+
 	public Customer fromDTO(CustomerNewDTO objDto) {
-		Customer obj = new Customer(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOuCnpj(), CustomerType.toEnum(objDto.getType()));
+		Customer obj = new Customer(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOuCnpj(),
+				CustomerType.toEnum(objDto.getType()));
 		Address address = new Address(null, objDto.getStreet(), objDto.getNumber(), objDto.getComplement(),
-				objDto.getNeighborhood(), objDto.getZipCode(), obj, new City(objDto.getCityId(), null, null) );
+				objDto.getNeighborhood(), objDto.getZipCode(), obj, new City(objDto.getCityId(), null, null));
 		obj.getAddresses().add(address);
 		obj.getPhones().add(objDto.getPhone1());
-		if(objDto.getPhone2() != null) {
+		if (objDto.getPhone2() != null) {
 			obj.getPhones().add(objDto.getPhone2());
 		}
-		if(objDto.getPhone3() != null) {
+		if (objDto.getPhone3() != null) {
 			obj.getPhones().add(objDto.getPhone3());
 		}
 		return obj;
 	}
-	
+
 	private void udpateDate(Customer newObj, CustomerDTO objDto) {
 		newObj.setName(objDto.getName());
 		newObj.setEmail(objDto.getEmail());

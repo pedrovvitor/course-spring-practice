@@ -32,13 +32,13 @@ public class CustomerResource {
 
 	@Autowired
 	private CustomerService service;
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Customer> findById(@PathVariable Long id){
+	public ResponseEntity<Customer> findById(@PathVariable Long id) {
 		Customer obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Customer> insert(@Valid @RequestBody CustomerNewDTO objDto) {
@@ -46,7 +46,7 @@ public class CustomerResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> findAll() {
 		List<Customer> list = service.findAll();
@@ -55,28 +55,26 @@ public class CustomerResource {
 	}
 
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<CustomerDTO>> findPage(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "24")Integer size,
+	public ResponseEntity<Page<CustomerDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Customer> list = service.findPage(page, size, orderBy, direction);
 		Page<CustomerDTO> listDto = list.map(obj -> new CustomerDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Customer> update(@PathVariable Long id,@Valid @RequestBody CustomerDTO objDto) {
+	public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody CustomerDTO objDto) {
 		objDto.setId(id);
 		service.update(objDto);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
 }

@@ -13,12 +13,12 @@ public class CustomerDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	@NotEmpty(message = "Mandatory")
+	@NotEmpty(message = "Mandatory filling")
 	@Length(min = 5, max = 120, message = "Must contain between 5 and 120 characters")
 	private String name;
 	
-	@NotEmpty(message = "Mandatory")
-	@Email(message = "Email inválido")
+	@NotEmpty(message = "Mandatory filling")
+	@Email(message = "Invalid Email")
 	private String email;
 
 	public CustomerDTO() {
