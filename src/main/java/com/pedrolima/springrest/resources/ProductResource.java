@@ -1,5 +1,7 @@
 package com.pedrolima.springrest.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,9 @@ public class ProductResource {
 			@RequestParam(value = "size", defaultValue = "24")Integer size,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
-		Page<Product> list = service.search(name, URL.decodeLongList(ids), page, size, orderBy, direction);
+		String nameDecoded = URL.decodeParam(name);
+		List<Long> idList = URL.decodeLongList(ids);
+		Page<Product> list = service.search(nameDecoded, idList, page, size, orderBy, direction);
 		Page<ProductDTO> listDto = list.map(obj -> new ProductDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}

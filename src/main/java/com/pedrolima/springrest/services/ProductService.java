@@ -27,12 +27,12 @@ public class ProductService {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
 	}
 		
-	public Page<Product> search(String name, List<Long> ids, Integer page, Integer linesPerPage, String direction, String orderBy ){
+	public Page<Product> search(String name, List<Long> ids, Integer page, Integer linesPerPage, String orderBy, String direction ){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Category> categories = new ArrayList<>();
 		for(Long id : ids) {
 			categories.add(catService.findById(id));
 		}
-		return repository.search(name, categories, pageRequest);
+		return repository.findDistinctByNameContainingAndCategoriesIn(name, categories, pageRequest);
 	}
 }
