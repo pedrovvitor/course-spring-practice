@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pedrolima.springrest.entities.enums.PaymentState;
 
 @Entity
 @Table(name = "tb_payment_slip")
+@JsonTypeName("pagamentoComBoleto")
 public class PaymentSlip extends Payment {
 	private static final long serialVersionUID = 1L;
 
