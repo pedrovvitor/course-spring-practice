@@ -134,7 +134,6 @@ public class TestConfig implements CommandLineRunner {
 		customerRepository.save(customer1);
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
 		
-		
 		Order o1 = new Order(null, LocalDateTime.of(2017, 9, 30, 10, 32), customer1, ad1);
 		Order o2 = new Order(null, LocalDateTime.of(2017, 10, 10, 19, 35), customer1, ad2);
 		

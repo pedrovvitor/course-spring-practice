@@ -77,6 +77,9 @@ public class ItemOrder implements Serializable {
 		this.price = price;
 	}
 	
-	
+	// é preciso colocar o get antes para que ele seja reconhecido pelo Json e serializado
+	public Double getSubTotal() {
+		return (price - discount) * quantity;
+	}
 	
 }
