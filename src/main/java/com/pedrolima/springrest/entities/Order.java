@@ -1,9 +1,12 @@
 package com.pedrolima.springrest.entities;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -128,4 +131,24 @@ public class Order implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Order number: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(getInstant().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+		builder.append(", Customer: ");
+		builder.append(getCustomer().getName());
+		builder.append(", Payment status: ");
+		builder.append(getPayment().getState().getDescription());
+		builder.append("\nDetails:\n");
+		builder.append(getItens().stream().map((item) -> item.toString()).collect(Collectors.joining()));
+		builder.append("Total Value: ");
+		builder.append(nf.format(getTotalValue()));
+		return builder.toString();
+	}
+
+	
 }
