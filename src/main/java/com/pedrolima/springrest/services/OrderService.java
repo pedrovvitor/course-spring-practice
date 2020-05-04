@@ -32,6 +32,9 @@ public class OrderService {
 
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Order findById(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
@@ -59,7 +62,7 @@ public class OrderService {
 		}
 		;
 		itemOrderRepository.saveAll(obj.getItens());
-		System.out.println(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 }
