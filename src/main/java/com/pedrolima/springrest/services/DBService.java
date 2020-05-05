@@ -21,6 +21,7 @@ import com.pedrolima.springrest.entities.Product;
 import com.pedrolima.springrest.entities.State;
 import com.pedrolima.springrest.entities.enums.CustomerType;
 import com.pedrolima.springrest.entities.enums.PaymentState;
+import com.pedrolima.springrest.entities.enums.Profile;
 import com.pedrolima.springrest.repositories.AddressRepository;
 import com.pedrolima.springrest.repositories.CategoryRepository;
 import com.pedrolima.springrest.repositories.CityRepository;
@@ -114,16 +115,22 @@ public class DBService {
 
 			Customer customer1 = new Customer(null, "Maria Silva", "pedrojppb2@gmail.com", "36378912377",
 					CustomerType.PESSOAFISICA, pe.encode("123"));
-
 			customer1.getPhones().addAll(Arrays.asList("8398547125", "83958521475"));
-
+			
+			Customer customer2 = new Customer(null, "Ana Costa", "pedrojppb@gmail.com", "54938619091",
+					CustomerType.PESSOAFISICA, pe.encode("123"));
+			customer2.getPhones().addAll(Arrays.asList("83985214789", "83963254125"));
+			customer2.addProfile(Profile.ADMIN);
+			
 			Address ad1 = new Address(null, "Rua Flores", "300", "apto 203", "Jardim", "38220834", customer1, c1);
 			Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38077012", customer1, c2);
+			Address ad3 = new Address(null, "Rua Santo Antonio", "200", "Casa", "Cidade Jardim", "58005745", customer2, c3);
 
 			customer1.getAddresses().addAll(Arrays.asList(ad1, ad2));
+			customer2.getAddresses().addAll(Arrays.asList(ad3));
 
-			customerRepository.save(customer1);
-			addressRepository.saveAll(Arrays.asList(ad1, ad2));
+			customerRepository.saveAll(Arrays.asList(customer1, customer2));
+			addressRepository.saveAll(Arrays.asList(ad1, ad2, ad3));
 			
 			Order o1 = new Order(null, LocalDateTime.of(2017, 9, 30, 10, 32), customer1, ad1);
 			Order o2 = new Order(null, LocalDateTime.of(2017, 10, 10, 19, 35), customer1, ad2);

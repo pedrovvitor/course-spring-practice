@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pedrolima.springrest.entities.enums.CustomerType;
+import com.pedrolima.springrest.entities.enums.Profile;
 
 @Entity
 @Table(name = "tb_customer")
@@ -45,14 +48,19 @@ public class Customer implements Serializable {
 	private List<Address> addresses = new ArrayList<Address>();
 
 	@ElementCollection
-	@CollectionTable(name = "phone")
+	@CollectionTable(name = "PHONES")
 	private Set<String> phones = new HashSet<>();
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<Integer>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "customer")
 	private List<Order> orders = new ArrayList<>();
 
 	public Customer() {
+		addProfile(Profile.USER);
 	}
 
 	//Esse contrutor com argumentos foi criado para facilitar a instanciação dos objetos no banco de dados.
@@ -64,6 +72,7 @@ public class Customer implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.type = (type == null) ? null : type.getCod();
 		this.password = password;
+		addProfile(Profile.USER);
 	}
 
 	public Long getId() {
@@ -112,6 +121,14 @@ public class Customer implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map((profile) -> Profile.toEnum(profile)).collect(Collectors.toSet());
+	}
+	
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getId());
 	}
 
 	public List<Address> getAddresses() {
