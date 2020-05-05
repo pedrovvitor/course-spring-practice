@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.dto.CustomerDTO;
@@ -24,6 +25,9 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	public Customer findById(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
@@ -59,12 +63,12 @@ public class CustomerService {
 	}
 
 	public Customer fromDTO(CustomerDTO objDto) {
-		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
+		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null, null);
 	}
 
 	public Customer fromDTO(CustomerNewDTO objDto) {
 		Customer obj = new Customer(null, objDto.getName(), objDto.getEmail(), objDto.getCpfOuCnpj(),
-				CustomerType.toEnum(objDto.getType()));
+				CustomerType.toEnum(objDto.getType()), pe.encode(objDto.getPassword()));
 		Address address = new Address(null, objDto.getStreet(), objDto.getNumber(), objDto.getComplement(),
 				objDto.getNeighborhood(), objDto.getZipCode(), obj, new City(objDto.getCityId(), null, null));
 		obj.getAddresses().add(address);

@@ -37,6 +37,9 @@ public class Customer implements Serializable {
 	private String cpfOuCnpj;
 
 	private Integer type;
+	
+	@JsonIgnore
+	private String password;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Address> addresses = new ArrayList<Address>();
@@ -52,13 +55,15 @@ public class Customer implements Serializable {
 	public Customer() {
 	}
 
-	public Customer(Long id, String name, String email, String cpfOuCnpj, CustomerType type) {
+	//Esse contrutor com argumentos foi criado para facilitar a instanciação dos objetos no banco de dados.
+	public Customer(Long id, String name, String email, String cpfOuCnpj, CustomerType type, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.type = (type == null) ? null : type.getCod();
+		this.password = password;
 	}
 
 	public Long getId() {
@@ -100,6 +105,14 @@ public class Customer implements Serializable {
 	public void setType(CustomerType type) {
 		this.type = type.getCod();
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public List<Address> getAddresses() {
 		return addresses;
@@ -138,4 +151,5 @@ public class Customer implements Serializable {
 		return true;
 	}
 
+	
 }

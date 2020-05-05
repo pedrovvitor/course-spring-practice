@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.entities.Address;
@@ -51,6 +52,8 @@ public class DBService {
 	private PaymentRepository paymentRepository;
 	@Autowired
 	private ItemOrderRepository itemOrderRepository;
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	public void instantiateDatabase(){
 			Category cat1 = new Category(null, "Informática");
@@ -110,7 +113,7 @@ public class DBService {
 			cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
 			Customer customer1 = new Customer(null, "Maria Silva", "pedrojppb2@gmail.com", "36378912377",
-					CustomerType.PESSOAFISICA);
+					CustomerType.PESSOAFISICA, pe.encode("123"));
 
 			customer1.getPhones().addAll(Arrays.asList("8398547125", "83958521475"));
 
