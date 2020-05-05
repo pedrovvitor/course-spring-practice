@@ -16,11 +16,15 @@ public class URL {
 		}
 	}
 
-	public static List<Long> decodeLongList(String value){
-		return Arrays
-				.asList(value.split(","))
-				.stream()
-				.map((s) -> Long.parseLong(s))
-				.collect(Collectors.toList());
+	public static List<Long> decodeLongList(String value) {
+		try {
+			return Arrays
+					.asList(value.split(","))
+					.stream()
+					.map((s) -> Long.parseLong(s))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

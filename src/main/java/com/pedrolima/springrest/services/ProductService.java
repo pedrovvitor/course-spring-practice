@@ -30,8 +30,12 @@ public class ProductService {
 	public Page<Product> search(String name, List<Long> ids, Integer page, Integer linesPerPage, String orderBy, String direction ){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Category> categories = new ArrayList<>();
-		for(Long id : ids) {
-			categories.add(catService.findById(id));
+		try {
+			for(Long id : ids) {
+				categories.add(catService.findById(id));
+			}
+		} catch (NullPointerException e) {
+			categories = catService.findAll();
 		}
 		return repository.findDistinctByNameContainingAndCategoriesIn(name, categories, pageRequest);
 	}

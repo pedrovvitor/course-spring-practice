@@ -36,7 +36,7 @@ public class ProductResource {
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "24")Integer size,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		String nameDecoded = URL.decodeParam(name);
 		List<Long> idList = URL.decodeLongList(ids);
 		Page<Product> list = service.search(nameDecoded, idList, page, size, orderBy, direction);
