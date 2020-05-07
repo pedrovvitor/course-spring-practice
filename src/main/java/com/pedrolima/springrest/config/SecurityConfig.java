@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.pedrolima.springrest.security.JWTAuthenticationFilter;
+import com.pedrolima.springrest.security.JWTAuthorizationFilter;
 import com.pedrolima.springrest.security.JWTUtil;
 
 @Configuration
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(PUBLIC_MATCHERS).permitAll() // permite tudo nos endponits declarados no array.
 		.anyRequest().authenticated(); // qualquer outro endpoint requer autenticação.
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
