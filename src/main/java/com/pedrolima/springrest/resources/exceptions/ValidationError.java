@@ -1,6 +1,5 @@
 package com.pedrolima.springrest.resources.exceptions;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +8,8 @@ public class ValidationError extends StandardError {
 	
 	private List<FieldMessage> errors = new ArrayList<FieldMessage>();
 
-	public ValidationError(Integer status, String msg, Instant instant) {
-		super(status, msg, instant);
+	public ValidationError(Integer status, String msg, String moment) {
+		super(status, msg, moment);
 	}
 
 	public List<FieldMessage> getErrors() {

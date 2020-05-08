@@ -16,7 +16,10 @@ import com.pedrolima.springrest.entities.Address;
 import com.pedrolima.springrest.entities.City;
 import com.pedrolima.springrest.entities.Customer;
 import com.pedrolima.springrest.entities.enums.CustomerType;
+import com.pedrolima.springrest.entities.enums.Profile;
 import com.pedrolima.springrest.repositories.CustomerRepository;
+import com.pedrolima.springrest.security.UserSS;
+import com.pedrolima.springrest.services.exceptions.AuthorizationException;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
@@ -30,6 +33,11 @@ public class CustomerService {
 	private BCryptPasswordEncoder pe;
 
 	public Customer findById(Long id) {
+		
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Access denied.");
+		}
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
 	}
 

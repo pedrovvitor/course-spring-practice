@@ -1,20 +1,19 @@
 package com.pedrolima.springrest.resources.exceptions;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer status;
 	private String msg;
-	private Instant instant;
+	private String moment;
 
-	public StandardError(Integer status, String msg, Instant instant) {
+	public StandardError(Integer status, String msg, String moment) {
 		super();
 		this.status = status;
 		this.msg = msg;
-		this.instant = instant;
+		this.moment = moment;
 	}
 
 	public Integer getStatus() {
@@ -33,12 +32,12 @@ public class StandardError implements Serializable {
 		this.msg = msg;
 	}
 
-	public Instant getInstant() {
-		return instant;
+	public String getInstant() {
+		return moment;
 	}
 
-	public void setInstant(Instant instant) {
-		this.instant = instant;
+	public void setInstant(String moment) {
+		this.moment = moment;
 	}
 
 }
