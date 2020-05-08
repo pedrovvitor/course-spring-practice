@@ -3,9 +3,13 @@ package com.pedrolima.springrest.services;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pedrolima.springrest.entities.Customer;
 import com.pedrolima.springrest.entities.ItemOrder;
 import com.pedrolima.springrest.entities.Order;
 import com.pedrolima.springrest.entities.PaymentSlip;
@@ -13,6 +17,8 @@ import com.pedrolima.springrest.entities.enums.PaymentState;
 import com.pedrolima.springrest.repositories.ItemOrderRepository;
 import com.pedrolima.springrest.repositories.OrderRepository;
 import com.pedrolima.springrest.repositories.PaymentRepository;
+import com.pedrolima.springrest.security.UserSS;
+import com.pedrolima.springrest.services.exceptions.AuthorizationException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -60,9 +66,19 @@ public class OrderService {
 			item.setPrice(item.getProduct().getPrice());
 			item.setOrder(obj);
 		}
-		;
 		itemOrderRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
+	}
+	
+	public Page<Order> findPage( Integer page, Integer size, String orderBy, String direction){
+		UserSS user = UserService.authenticated();
+		if(user==null) {
+			throw new AuthorizationException("Access denied.");
+		}
+		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
+		Customer customer = customerService.findById(user.getId());
+		return repository.findByCustomer(customer, pageRequest);
+		
 	}
 }
