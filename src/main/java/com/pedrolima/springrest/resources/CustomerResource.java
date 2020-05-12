@@ -40,6 +40,12 @@ public class CustomerResource {
 		Customer obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@GetMapping(value = "/email")
+	public ResponseEntity<Customer> find(@RequestParam(value = "value") String email){
+		Customer obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
 
 	@PostMapping
 	@Transactional

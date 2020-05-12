@@ -25,7 +25,9 @@ import com.pedrolima.springrest.repositories.CustomerRepository;
 import com.pedrolima.springrest.security.UserSS;
 import com.pedrolima.springrest.services.exceptions.AuthorizationException;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
+
 
 @Service
 public class CustomerService {
@@ -59,9 +61,6 @@ public class CustomerService {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
 	}
 
-	public List<Customer> findAll() {
-		return repository.findAll();
-	}
 
 	public Customer insert(CustomerNewDTO objDto) {
 		Customer obj = fromDTO(objDto);
@@ -83,6 +82,22 @@ public class CustomerService {
 		}
 	}
 
+	public List<Customer> findAll() {
+		return repository.findAll();
+	}
+	
+	public Customer findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Profile.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Access denied.");
+		}
+		Customer obj = repository.findByEmail(email);
+		if(obj == null) {
+			throw new ObjectNotFoundException("Object not found! id: " + user.getId() + " , Type: " + Customer.class.getName());
+		}
+		return obj;
+	}
+	
 	public Page<Customer> findPage(Integer page, Integer size, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
@@ -127,4 +142,6 @@ public class CustomerService {
 		
 		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 	}
+	
+	
 }
