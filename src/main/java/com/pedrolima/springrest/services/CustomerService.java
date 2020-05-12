@@ -1,5 +1,6 @@
 package com.pedrolima.springrest.services;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pedrolima.springrest.dto.CustomerDTO;
 import com.pedrolima.springrest.dto.CustomerNewDTO;
@@ -31,6 +33,9 @@ public class CustomerService {
 	
 	@Autowired
 	private BCryptPasswordEncoder pe;
+	
+	@Autowired
+	private S3Service s3Service;
 
 	public Customer findById(Long id) {
 		
@@ -93,5 +98,9 @@ public class CustomerService {
 	private void udpateDate(Customer newObj, CustomerDTO objDto) {
 		newObj.setName(objDto.getName());
 		newObj.setEmail(objDto.getEmail());
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 }

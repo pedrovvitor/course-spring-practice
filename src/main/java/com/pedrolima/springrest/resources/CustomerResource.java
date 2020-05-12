@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pedrolima.springrest.dto.CustomerDTO;
@@ -78,6 +79,12 @@ public class CustomerResource {
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping(value = "/picture")
+	public ResponseEntity<Customer> uploadProfilePicture(@RequestParam(name = "file") MultipartFile multipartFile) {
+		URI uri = service.uploadProfilePicture(multipartFile);
+		return ResponseEntity.created(uri).build();
 	}
 
 }
