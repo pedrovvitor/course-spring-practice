@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.pedrolima.springrest.services.exceptions.AuthorizationException;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
 import com.pedrolima.springrest.services.exceptions.FileException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -33,6 +34,13 @@ public class ResourceExceptionHandler {
 			HttpServletRequest request) {
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now().toString());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e,
+			HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), LocalDateTime.now().toString());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
