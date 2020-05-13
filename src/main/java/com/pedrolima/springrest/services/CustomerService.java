@@ -26,7 +26,6 @@ import com.pedrolima.springrest.security.UserSS;
 import com.pedrolima.springrest.services.exceptions.AuthorizationException;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
 import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
-import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
 
 
 @Service
@@ -58,7 +57,7 @@ public class CustomerService {
 		if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Access denied.");
 		}
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found! Id: " + id));
 	}
 
 

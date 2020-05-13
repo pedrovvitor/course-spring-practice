@@ -13,7 +13,7 @@ import com.pedrolima.springrest.dto.CategoryDTO;
 import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.repositories.CategoryRepository;
 import com.pedrolima.springrest.services.exceptions.DataIntegrityException;
-import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -24,7 +24,7 @@ public class CategoryService {
 
 	public Category findById(Long id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! Id: " + id));
+				.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
 	}
 
 	public List<Category> findAll() {

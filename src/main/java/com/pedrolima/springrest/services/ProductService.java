@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.pedrolima.springrest.entities.Category;
 import com.pedrolima.springrest.entities.Product;
 import com.pedrolima.springrest.repositories.ProductRepository;
-import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ProductService {
@@ -24,7 +24,7 @@ public class ProductService {
 	private CategoryService catService;
 	
 	public Product findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found! Id: " + id));
 	}
 		
 	public Page<Product> search(String name, List<Long> ids, Integer page, Integer linesPerPage, String orderBy, String direction ){

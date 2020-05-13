@@ -19,7 +19,7 @@ import com.pedrolima.springrest.repositories.OrderRepository;
 import com.pedrolima.springrest.repositories.PaymentRepository;
 import com.pedrolima.springrest.security.UserSS;
 import com.pedrolima.springrest.services.exceptions.AuthorizationException;
-import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class OrderService {
@@ -43,7 +43,7 @@ public class OrderService {
 	private EmailService emailService;
 
 	public Order findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Object not found! Id: " + id));
+		return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found! Id: " + id));
 	}
 
 	@Transactional

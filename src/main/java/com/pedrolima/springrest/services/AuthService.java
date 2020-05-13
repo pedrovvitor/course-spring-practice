@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pedrolima.springrest.entities.Customer;
 import com.pedrolima.springrest.repositories.CustomerRepository;
-import com.pedrolima.springrest.services.exceptions.ResourceNotFoundException;
+import com.pedrolima.springrest.services.exceptions.ObjectNotFoundException;
 
 
 @Service
@@ -29,7 +29,7 @@ public class AuthService {
 	
 		Customer customer = customerRepository.findByEmail(email);
 		if(customer == null) {
-			throw new ResourceNotFoundException("Email not found.");
+			throw new ObjectNotFoundException("Email not found.");
 		}
 		
 		String newPass = newPassword();
